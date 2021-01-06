@@ -116,6 +116,7 @@
         let puzzlediv = $g('#puzzle');
         let positionArray = [];
         function creatediv() {
+            $g('#puzzle').innerHTML="";
             for (let i = 0; i <= num * num - 1; i++) {
                 let div = $c('div');
                 div.setAttribute('class', 'smallpic');
