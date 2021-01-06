@@ -39,15 +39,15 @@
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
         </script>
     <button id="btn1">打亂拼圖</button>
-    <button id="btn2">印logArray</button>
     <button id="btn3">還原鍵</button>
     <input type="text" id="input">
     <button id="btn4">setNum</button>
+    <button id="btn5">印路徑BFS求解非最佳解</button>
     <div id="puzzle">
     </div>
     <img id="sitong" src="./PIC/1-1.jpg" width="600px" height="600px">
     <script type="module">
-        import { $g, $c } from './helpers.js'
+        import { $g, $c } from '../Module/helpers.js'
         window.onload = () => {
 
         }
@@ -68,15 +68,11 @@
             })
             logArray = [];
         })
-
-        let btn2 = $g('#btn2');
-        btn2.addEventListener('click', function () {
-            console.log(logArray);
-        })
+      
         let btn = $g('#btn1');
         btn.addEventListener('click', function () {
-            for (let i = 0; i <= 400; i++) {
-                console.log(i);
+            createopenArray(num);
+            for (let i = 0; i <= 5000; i++) {
                 upset();
             }
         })
@@ -87,6 +83,8 @@
             let img = imgnode.querySelector('img');
             node2.appendChild(img);
         }
+
+
         function upset() {
             let nodelist = $g('.smallpic');
             let nopicdiv = {};
@@ -109,7 +107,6 @@
         function changebyid(id1, id2) {
             let node1 = $g(`#div${id1}`);
             let imgnode = $g(`#div${id2}`);
-            console.log(imgnode);
             let img = imgnode.querySelector('img');
             node1.appendChild(img);
             putlogArray(id1, id2);
@@ -193,135 +190,120 @@
             num = parseInt($g('#input').value);
             creatediv();
             addclickEvent();
+
+
         })
 
-        // //-1代表空白
-        // let solveArray = [];
-        // let beginstring = "";
-        // function creatbeginArray() {
-        //     let beginArray = [];
-        //     beginstring="";
-        //     for (let i = 0; i <= num * num - 2; i++) {
-        //         beginArray.push(i);
-        //     }
-        //     beginArray.push(-1);
-        //     for (let i = 0; i <= beginArray.length - 1; i++) {
-        //         if (i != beginArray.length - 1) {
-        //             beginstring += `${beginArray[i]},`;
-        //         }
-        //         else {
-        //             beginstring += beginArray[i];
-        //         }
-        //     }
-        // }
-        // function createSolveArray(solveArray, beginstring) {
-        //     let keyArray = Object.keys(solveArray);
-        //     if (keyArray.includes(beginstring)) {
-        //         return;
-        //     }
-        //     let array=[];
-        //     array = beginstring.split(',');
-        //     debugger;
-        //     let index = array.indexOf('-1');
-        //     let nearArray = getNear(index);
-        //     let string = "";
-        //     nearArray.forEach(p => {
-        //         string="";
-        //         index = array.indexOf('-1');
-        //         let copyarray = array.copyWithin(0);
-        //         copyarray[index] = copyarray[p];
-        //         copyarray[p] = -1;
-        //         for (let i = 0; i <= copyarray.length - 1; i++) {
-        //         if (i != copyarray.length - 1) {
-        //             string += `${copyarray[i]},`;
-        //         }
-        //         else {
-        //             string += copyarray[i];
-        //         }
-        //     }
-        //         if (solveArray[beginstring] == null) {
-        //             solveArray[beginstring] = [];
-        //             solveArray[beginstring].push(string);
-        //         }
-        //         else {
-        //             solveArray[beginstring].push(string);
-        //         }
-        //         createSolveArray(solveArray, string);
-        //     })
-        // }
-        // function createSolveSet(beginArray1){
-        //     let index=beginArray1.indexOf(-1);
-        //     let nearArray=getNear(index);
-        //     debugger;
-        //     nearArray.forEach(p=>{
-        //         let copyarray=beginArray1.copyWithin(0);
-        //         copyarray[index]=copyarray[p];
-        //         copyarray[p]=-1;
-        //         console.log(copyarray);
-        //         if(!solveArray.includes(copyarray)){
-        //             solveArray.push(copyarray);
-        //             createSolveSet(copyarray);
-        //         }
-        //     })
-        // }
-    </script>
+        let btn5 = document.querySelector('#btn5');
+        btn5.addEventListener('click', function () {
+            logforeach();
+        });
 
-    <script>
+        let nowArray = [];
+        function createopenArray(num) {
+            for (let i = 0; i <= num * num - 2; i++) {
+                nowArray.push(i);
+            }
+            nowArray.push(-1);
+            console.log(nowArray);
+        }
 
-        // function BF_CreateparentArray(solveArray) {
-        //     let start = parseInt(num) * parseInt(num) - 1;
-        //     let seenArray = [];
-        //     seenArray.push(start);
-        //     let tempArray = [];
-        //     tempArray.push(start);
-        //     let objstart={self:start,father:''};
-        //     parentArray.push(objstart);
-        //     debugger;
-        //     while (tempArray.length > 0) {
-        //         let nodeid = tempArray[0];
-        //         tempArray.splice(0,1);
-        //         let return1 = solveArray.find(p=>p.nodeid==nodeid);
-        //         let nearArray=return1.array;
-        //         nearArray.forEach(p => {
-        //             if (!seenArray.includes(p)) {
-        //                 tempArray.push(p);
-        //                 let obj1 = { self: p, father: nodeid };
-        //                 parentArray.push(obj1);
-        //                 seenArray.push(p);
-        //             }
-        //         })       
-        //     }
-        //     console.log(parentArray);
-        // }
-        // let traceArray=[];
-        // function getTrace(start,parentArray){
-        //     debugger;
-        //     let nodeid=parseInt(start);
-        //     while(nodeid!=''){
-        //         traceArray.push(nodeid);
-        //         let obj1=parentArray.find(p=>p.self==nodeid);
-        //         nodeid=obj1.father;
-        //     }
-        //     console.log(traceArray);               
-        // }
+        let solveArray = [];
+        function logforeach() {
+            logArray.forEach(p => {
+                //p[1]是空白
+                createSolveArray(p[1], p[2], nowArray);
+            })
+            BFS();
+            //點擊觸發--------------------------------------------------------------
+            getNowArray();
+            getTrace(parentArray, nowArray);
+            console.log(traceArray);
+        }
+        let nowArray1 = [];
+        function getNowArray() {
+            let divs = $g(".smallpic");
+            divs.forEach(p => {
+                let img = p.querySelector('img');
+                if (img != undefined) {
+                    nowArray1.push(img.id.substring(3));
+                }
+                else {
+                    nowArray1.push(-1);
+                }
+            })
+        }
 
-        // function searchsolve() {
-        //     createSolveArray();
-        //     BF_CreateparentArray(solveArray);         
-        // }
+        function createSolveArray(id1, id2, inputarray) {
+            let copyarray = [];
+            inputarray.forEach(p => {
+                copyarray.push(p);
+            });
+            copyarray[id1] = inputarray[id2];
+            copyarray[id2] = inputarray[id1];
+            if (solveArray.length == 0) {
+                let array = [];
+                array.push(copyarray);
+                let input = { father: inputarray, sons: array };
+                solveArray.push(input);
+            }
+            else {
+                let obj = solveArray.find(p => JSON.stringify(p.father) == JSON.stringify(inputarray));
+                if (obj == undefined) {
+                    let array = [];
+                    array.push(copyarray);
+                    let obj = { father: inputarray, sons: array };
+                    solveArray.push(obj);
+                }
+                else {
+                    let sonobj = obj.sons.find(p => JSON.stringify(p) == JSON.stringify(copyarray));
+                    if (sonobj == undefined) {
+                        obj.sons.push(copyarray);
+                    }
+                }
+            }
+            nowArray = copyarray;
+        }
 
+        let parentArray = [];
+        function BFS() {
+            let startArray = solveArray[0].father;
+            let seenArray = [];
+            seenArray.push(startArray);
+            let tempArray = [];
+            tempArray.push(startArray);
+            let startobj = { self: startArray, father: null };
+            parentArray.push(startobj);
+            while (tempArray.length > 0) {
+                let array = tempArray[0];
+                tempArray.splice(0, 1);
+                let temp = solveArray.find(p =>
+                    JSON.stringify(p.father) == JSON.stringify(array)
+                );
+                if (temp != undefined) {
+                    let sonset = temp.sons;
+                    sonset.forEach(p => {
+                        let obj = seenArray.find(ele => JSON.stringify(ele) == JSON.stringify(p))
+                        if (obj == undefined) {
+                            let familyobj = { self: p, father: array }
+                            parentArray.push(familyobj);
+                            seenArray.push(p);
+                            tempArray.push(p);
+                        }
+                    })
+                }
+            }
+        }
+        let traceArray = [];
+        function getTrace(parentArray, startArray) {
+            let array = startArray;
+            while (array != null) {
+                traceArray.push(array);
+                let obj = parentArray.find(p => JSON.stringify(p.self) == JSON.stringify(array));
+                array = obj.father;
+            }
+        }
 
-
-        // function finddivnoimg(){
-        //    let nodeArray=$g('.smallpic');
-        //    let num=0;
-        //    nodeArray.forEach(p=>{
-        //        if(p.querySelector('img')==null){
-        //            num=p.id.substring(3);
-        //        }
-        //    })
-        //    return num;
-        // }
     </script>
 </body>
 
