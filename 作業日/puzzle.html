@@ -42,23 +42,23 @@
     <button id="btn3">還原鍵</button>
     <input type="text" id="input">
     <button id="btn4">setNum</button>
-    <button id="btn5">印路徑BFS求解非最佳解</button>
+    <button id="btn5">印路徑BFS3*3以上無最佳解</button>
+    <button id="btn6" disabled="true">開啟提示(請先按bfs)</button>
     <div id="puzzle">
     </div>
     <img id="sitong" src="./PIC/1-1.jpg" width="600px" height="600px">
     <script type="module">
-        import { $g, $c } from './helpers.js'
+        import { $g, $c } from './Module/helpers.js'
         window.onload = () => {
 
         }
         let num = 2;
 
         function checkwin() {
-            let div = $g(`#div${num * num - 1}`);
-            let img = div.querySelector('img');
-            if (img == null) {
-                alert('you win!!!');
-            }
+            getNowArray();
+           if(JSON.stringify(nowArray1)===JSON.stringify(nowArray)){
+               alert('you win!');
+           }
         }
         let btn3 = $g('#btn3');
         btn3.addEventListener('click', function () {
@@ -72,7 +72,7 @@
         let btn = $g('#btn1');
         btn.addEventListener('click', function () {
             createopenArray(num);
-            for (let i = 0; i <= 5000; i++) {
+            for (let i = 0; i <= 100000; i++) {
                 upset();
             }
         })
@@ -116,7 +116,6 @@
         let puzzlediv = $g('#puzzle');
         let positionArray = [];
         function creatediv() {
-            $g('#puzzle').innerHTML="";
             for (let i = 0; i <= num * num - 1; i++) {
                 let div = $c('div');
                 div.setAttribute('class', 'smallpic');
@@ -191,8 +190,6 @@
             num = parseInt($g('#input').value);
             creatediv();
             addclickEvent();
-
-
         })
 
         let btn5 = document.querySelector('#btn5');
@@ -202,6 +199,7 @@
 
         let nowArray = [];
         function createopenArray(num) {
+            nowArray = [];
             for (let i = 0; i <= num * num - 2; i++) {
                 nowArray.push(i);
             }
@@ -215,19 +213,16 @@
                 //p[1]是空白
                 createSolveArray(p[1], p[2], nowArray);
             })
-            BFS();
-            //點擊觸發--------------------------------------------------------------
-            getNowArray();
-            getTrace(parentArray, nowArray);
-            console.log(traceArray);
+            BFS();                   
         }
         let nowArray1 = [];
         function getNowArray() {
             let divs = $g(".smallpic");
+            nowArray1=[];
             divs.forEach(p => {
                 let img = p.querySelector('img');
                 if (img != undefined) {
-                    nowArray1.push(img.id.substring(3));
+                    nowArray1.push(parseInt(img.id.substring(3)));
                 }
                 else {
                     nowArray1.push(-1);
@@ -236,6 +231,7 @@
         }
 
         function createSolveArray(id1, id2, inputarray) {
+            //改成array.from
             let copyarray = [];
             inputarray.forEach(p => {
                 copyarray.push(p);
@@ -305,6 +301,13 @@
             }
         }
 
+        let btn6=$g('#btn6')
+        btn6.addEventListener('click',function(){
+            getNowArray();
+            getTrace(parentArray, nowArray);
+        })
+
+        
     </script>
 </body>
 
