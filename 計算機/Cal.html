@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="div1">
+        <label>借款金額</label>
+        <input type="text" id="t1">
+        <label>元</label>
+        </br>
+        <label>月利率 </label>
+        <input type="text" id="t2">
+        <label>%</label>
+        </br>
+        <label>月還款 </label>
+        <input type="text" id="t3">
+        <label>元</label>
+        </br>
+        <label>還完需 </label>
+        <input type="text" id="t4">
+        <label>月</label>
+        </br>
+        <label>總共還 </label>
+        <input type="text" id="t5">
+        <label>元</label>
+        </br>
+        <button id="btn1">計算</button>
+        <button id="btn2">清空</button>
+    </div>
+    <script>
+        input1=document.getElementById('t1');
+        input2=document.getElementById('t2');
+        input3=document.getElementById('t3');
+        input4=document.getElementById('t4');
+        input5=document.getElementById('t5');
+        document.querySelector('#btn1').addEventListener('click',function(){
+          var count=0;
+          var mymoney=0;
+          var money=parseInt(input1.value);
+          var plus=input2.value/100+1;         
+          var minus=parseInt(input3.value); 
+          while(money>0){
+              debugger
+              count++;
+              money=money*plus;
+              if(money>=minus){
+                  money=money-minus;
+                  mymoney+=minus;
+              }
+              else{
+                  mymoney+=money;
+                  money=0;
+              }
+          }
+          input4.value=count;
+          input5.value=mymoney;
+        })
+        document.querySelector('#btn2').addEventListener('click',function(){
+          input1.value="";
+          input2.value="";
+          input3.value="";
+          input4.value="";
+          input5.value="";
+        })
+    </script>
+</body>
+</html>
