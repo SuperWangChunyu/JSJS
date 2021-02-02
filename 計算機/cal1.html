@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="div1">
+        <label>借款金額</label>
+        <input type="text" id="t1">
+        <label>元</label>
+        </br>
+        <label>日利率 </label>
+        <input type="text" id="t2">
+        <label>%</label>
+        </br>
+        <label>年利率 </label>
+        <input type="text" id="t3">
+        <label>%</label>
+        </br>
+        <label>一年總共還 </label>
+        <input type="text" id="t4">
+        <label>元</label>
+        </br>
+        <button id="btn1">計算</button>
+        <button id="btn2">清空</button>
+    </div>
+    <script>
+        input1=document.getElementById('t1');
+        input2=document.getElementById('t2');
+        input3=document.getElementById('t3');
+        input4=document.getElementById('t4');
+        document.querySelector('#btn1').addEventListener('click',function(){
+          var money=parseInt(input1.value);
+          var dayplus=input2.value/100+1;         
+          var pow=Math.pow(dayplus,365);
+          input3.value=(pow*100-100).toString()+'%';
+          input4.value=money*pow;
+        })
+        document.querySelector('#btn2').addEventListener('click',function(){
+          input1.value="";
+          input2.value="";
+          input3.value="";
+          input4.value="";
+        })
+    </script>
+</body>
+</html>
